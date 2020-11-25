@@ -1,0 +1,6 @@
+@media screen and (max-width: 979px){
+  .popup__close.popup__close_type_tooltip{
+    left: calc(50% - 24px);
+    top: -68px;
+  }
+}

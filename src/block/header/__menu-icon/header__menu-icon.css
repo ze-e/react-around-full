@@ -1,0 +1,29 @@
+.header__menu-icon{
+  display: none;
+  width: 24px;
+  height: 24px;
+  border: none;
+  padding: none;
+  text-decoration: none;
+  background-color: black;
+  justify-self: center;
+  align-self: center;
+  background-image: url('../../../images/ui/menu.svg');
+  background-position: center;
+  object-fit: cover; 
+  background-repeat: no-repeat;
+}
+
+.header__menu-icon.header__menu-icon_state_closed{
+  background-image: url('../../../images/ui/close.svg');
+}
+
+@media screen and (max-width: 979px){
+  .header__menu-icon{
+    display: block;
+  }
+  .header__menu-icon:hover{
+    opacity: 0.6;
+    cursor: pointer;
+  }
+}

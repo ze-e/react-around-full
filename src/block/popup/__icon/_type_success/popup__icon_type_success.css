@@ -1,0 +1,7 @@
+.popup__icon_type_success{
+  width: 120px;
+  height: 120px;
+  background-image: url('../../../../images/success.svg');
+  margin: auto;
+  margin-bottom: 32px;
+}

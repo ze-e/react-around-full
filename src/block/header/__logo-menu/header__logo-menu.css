@@ -1,0 +1,8 @@
+@media screen and (max-width: 979px){
+  .header__logo-menu{
+    width: 282px;
+    display: flex;
+    justify-content: space-between; 
+    border-top: 1px solid rgba(84, 84, 84, 0.7);
+  }
+}

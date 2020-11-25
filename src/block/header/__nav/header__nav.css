@@ -1,0 +1,31 @@
+.header__nav{
+  font-size: 18px;
+  line-height: 22px;
+  text-align: right;
+  color: #FFFFFF;
+  align-self: flex-end;
+  padding-bottom: 41px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media screen and (max-width: 979px){
+  .header__nav{
+    width: 126px;
+    height: 24px;
+    padding-top: 28px;
+    margin-bottom: 40px;
+    margin-top: 40px;
+
+    padding-left: 27px;
+    font-size: 14px;
+    line-height: 17px;
+    justify-content: center;
+    flex-wrap: wrap;
+    text-align: center;
+  }
+
+  .header__nav.header__nav_state_closed{
+    display: none;
+  }
+}

@@ -1,0 +1,23 @@
+.login__submit{
+  margin-top: 216px;
+  background: #FFFFFF;
+  border-radius: 2px;
+  width: 358px;
+  height: 50px;
+  border-style: none;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  color: black;
+}
+
+.login__submit.login__submit_disabled{
+  background: black;
+  border: solid 1px gray;
+  color: gray;
+}
+
+.login__submit:hover{
+  opacity: 0.85;
+  cursor: pointer;
+}

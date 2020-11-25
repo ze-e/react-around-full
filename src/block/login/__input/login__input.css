@@ -1,0 +1,23 @@
+
+.login__input{
+  border: none;
+  border-bottom: 2px solid #CCCCCC;
+  background-color: black;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  color: #CCCCCC;
+  width: 358px;
+  height: 14px;
+  margin-top: 30px;
+}
+
+.login__input:focus{
+  border-bottom: 2px solid #CCCCCC;
+}
+
+.login__input::placeholder{
+  color: #CCCCCC;
+  opacity: 1;
+}
