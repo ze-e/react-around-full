@@ -4,11 +4,15 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const app = express();
 
+//dev
+var cors = require('cors')
+
+
 const { DATABASE }  = require('./config/db_config')
 const auth = require('./middleware/auth');
 const errorHandlder = require('./middleware/errorHandler');
 
-const { login, createUser, editUser, deleteUser } = require('./controllers/user');
+const { login, createUser, getUser, editUser, editAvatar, deleteUser } = require('./controllers/user');
 const { getCards, createCard, deleteCard, addLike, deleteLike } = require('./controllers/card');
 
 //connect to database
@@ -21,6 +25,8 @@ mongoose.connect(DATABASE, {
 
 const { PORT = 5000 } = process.env;
 
+//dev
+app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -28,7 +34,9 @@ app.use(bodyParser.json());
 //user routes
 app.post('/signin', login);
 app.post('/signup', createUser); 
+app.get('/users/me', auth, getUser);
 app.patch('/users/me', auth, editUser); 
+app.patch('/users/me/avatar', auth, editAvatar); 
 app.delete('/users/me', auth, deleteUser); 
 
 //card routes
@@ -42,9 +50,6 @@ app.delete('/cards/:cardId/likes', auth, deleteLike);
 app.use(express.static(path.join(__dirname, 'public')));
 
 //handle errors
-// app.use((err, req, res, next) => {
-//   res.status(500).send({ message: err.message });
-// });
 app.use(errorHandlder);
 
 //server

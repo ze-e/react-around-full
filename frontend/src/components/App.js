@@ -34,7 +34,6 @@ function App() {
   const [cards, setCards] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [loggedIn, setloggedIn] = React.useState(false);
-  const [userEmail, setUserEmail] = React.useState(false);
 
   //isOpen props for popups
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
@@ -47,21 +46,27 @@ function App() {
 
   //update user functions
   function handleUpdateUser(name, about){
-    api.editProfile(name, about).then((data)=>{
+    api.editProfile(name, about)
+    .then((data)=>{
       setcurrentUser(data);
-    }).catch((err) => { 
+    })
+    .catch((err) => { 
       console.log(err);  
       alert(err);
-    }).finally(()=>{closeAllPopups()})
+    })
+    .finally(()=>{closeAllPopups()})
   }
 
   function handleUpdateAvatar(link){
-    api.editAvatar(link).then((data)=>{
+    api.editAvatar(link)
+    .then((data)=>{
       setcurrentUser(data);
-    }).catch((err) => { 
+    })
+    .catch((err) => { 
       console.log(err);
       alert(err);
-    }).finally(()=>{closeAllPopups()})
+    })
+    .finally(()=>{closeAllPopups()})
   }
   //card functions
   function handleDeleteClick(card){
@@ -84,23 +89,28 @@ function App() {
       const newCards = cards.map((c) => c._id === card._id ? newCard : c);
       // Update the state
       setCards(newCards);
-    }).catch((err) => { 
+    })
+    .catch((err) => { 
       console.log(err);
       alert(err);
-    }).finally(()=>{closeAllPopups()})
+    })
+    .finally(()=>{closeAllPopups()})
   } 
 
   function handleCardDelete(cardId){
     //delete the card
-    api.deleteCard(cardId).then(() => { 
+    api.deleteCard(cardId)
+    .then(() => { 
       const newCards = cards.filter((c)=>{
         return c._id !== cardId;
       }); 
       setCards(newCards);
-    }).catch((err) => { 
+    })
+    .catch((err) => { 
         console.log(err); 
         alert(err);
-      }).finally(()=>{closeAllPopups()})
+      })
+    .finally(()=>{closeAllPopups()})
   }
   
   //popup functions
@@ -119,10 +129,12 @@ function App() {
   function handleAddPlaceSubmit(name, link){
     api.addCard(name,link).then((newCard) => { 
       setCards([...cards, newCard]); 
-    }).catch((err) => { 
+    })
+    .catch((err) => { 
         console.log(err); 
         alert(err);
-      }).finally(()=>{closeAllPopups()})
+      })
+    .finally(()=>{closeAllPopups()})
   }
 
   //login functions
@@ -204,27 +216,27 @@ React.useEffect(() => {
       //get user from token
       if (localStorage.getItem('token')) {
         const token = localStorage.getItem('token');
+        api.setToken(token);
         setloggedIn(true);
-        auth.authorize(token).then((data)=>{
-          setUserEmail(data.data.email);
-          api.getUser().then((data)=>{
-            setcurrentUser(data);
-            //get cards
-            api.getCards().then((data) => {  
-              setCards(data)
-            }).catch((err) => { 
-                console.log(err);
-              })
-          }).catch((err) => { 
+        api.getUser()
+        .then((data)=>{
+          setcurrentUser(data);
+          //get cards
+          api.getCards()
+          .then((data) => {  
+            setCards(data)
+          })
+          .catch((err) => { 
             console.log(err);
           })
-        }).catch((err) => { 
-            console.log(err);
-          })
+        })
+        .catch((err) => { 
+          console.log(err);
+        })
       }
       //after loading everything, set loading to false
       setLoading(false);
-    },[loggedIn])
+    },[currentUser])
 
   return (
     //show loading message if user and cards are not loaded
@@ -232,7 +244,7 @@ React.useEffect(() => {
 
 <div className="App page">
 <CurrentUserContext.Provider value={currentUser}>
-  <Header loggedIn={loggedIn} login={handleLogin} email={userEmail} />
+  <Header loggedIn={loggedIn} login={handleLogin}  />
   <Switch>
   <Route path="/signup">
     <SignUp

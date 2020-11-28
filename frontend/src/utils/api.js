@@ -1,14 +1,17 @@
-import {token, groupId} from './config';
-
+//import {token, groupId} from './config';
+import {baseURL} from './config';
 class Api{
-  constructor({baseUrl, token}){
-    this.baseUrl = baseUrl;
+  constructor({baseURL}){
+    this.baseURL = baseURL;
+  }
+
+  setToken(token){
     this.token = token;
   }
   
   /* API FUNCTIONS */
   getUser(){
-    return fetch(`${this.baseUrl}/users/me`,{
+    return fetch(`${this.baseURL}/users/me`,{
       headers: {
         authorization: this.token
       }
@@ -22,7 +25,7 @@ class Api{
   }
   
   getCards(){
-    return fetch(`${this.baseUrl}/cards`,{
+    return fetch(`${this.baseURL}/cards`,{
       headers: {
         authorization: this.token
       }
@@ -36,7 +39,7 @@ class Api{
   }
 
   editProfile(name, about){
-    return fetch(`${this.baseUrl}/users/me`,{
+    return fetch(`${this.baseURL}/users/me`,{
       method: "PATCH",
       headers: {
         authorization: this.token,
@@ -56,7 +59,7 @@ class Api{
   }
 
   editAvatar(link){
-    return fetch(`${this.baseUrl}/users/me/avatar`,{
+    return fetch(`${this.baseURL}/users/me/avatar`,{
       method: "PATCH",
       headers: {
         authorization: this.token,
@@ -75,7 +78,7 @@ class Api{
   }
 
   addCard(name, link){
-    return fetch(`${this.baseUrl}/cards`,{
+    return fetch(`${this.baseURL}/cards`,{
       method: "POST",
       headers: {
         authorization: this.token,
@@ -95,7 +98,7 @@ class Api{
   }
 
   deleteCard(cardId){
-    return fetch(`${this.baseUrl}/cards/${cardId}`,{
+    return fetch(`${this.baseURL}/cards/${cardId}`,{
       method: "DELETE",
       headers: {
         authorization: this.token,
@@ -115,7 +118,7 @@ class Api{
   }
 
   addLike(cardId){
-    return fetch(`${this.baseUrl}/cards/likes/${cardId}`,{
+    return fetch(`${this.baseURL}/cards/likes/${cardId}`,{
       method: "PUT",
       headers: {
         authorization: this.token,
@@ -132,7 +135,7 @@ class Api{
   }
 
   deleteLike(cardId){
-    return fetch(`${this.baseUrl}/cards/likes/${cardId}`,{
+    return fetch(`${this.baseURL}/cards/likes/${cardId}`,{
       method: "DELETE",
       headers: {
         authorization: this.token,
@@ -149,8 +152,7 @@ class Api{
 }
 
 const api = new Api({
-  baseUrl : `https://around.nomoreparties.co/v1/${groupId}`, 
-  token : token
+  baseURL : baseURL, 
 });
 
 export {api};

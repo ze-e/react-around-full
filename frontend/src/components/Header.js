@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link, withRouter, useLocation } from 'react-router-dom';
 import logo from '../images/logo.svg';
+import {CurrentUserContext} from '../contexts/CurrentUserContext';
 
 function Header(props) {
+  const currentUser = React.useContext(CurrentUserContext);
   const location = useLocation();
   const [currentLocation, setLocation] = React.useState('login');
   const [showMenu, setShowMenu] = React.useState(false);
@@ -36,7 +38,7 @@ function Header(props) {
       <nav className={`header__nav ${(!showMenu && props.loggedIn) && 'header__nav_state_closed'}`}>
         {props.loggedIn ? 
         //logged in
-        <><p className="header__email">{props.email}</p>
+        <><p className="header__email">{currentUser.email}</p>
         <button className="header__link_type_logout" type="button" onClick={logOutUser}>Log out</button></> : 
         //logged out
         currentLocation === 'login' ? 

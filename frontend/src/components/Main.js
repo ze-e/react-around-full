@@ -33,7 +33,7 @@ function Main(props) {
     
     :
     //show loading screen if cards haven't loaded
-    <div className="loading">Loading cards...</div>
+    <div className="loading">Add your first place with the + button!</div>
     }
   </section>
   </>

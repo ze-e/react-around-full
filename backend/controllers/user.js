@@ -34,12 +34,36 @@ module.exports.login = (req, res) => {
   });
 };  
 
+module.exports.getUser = (req, res) => {
+  return User.findById(req.user._id)
+  .then((user) => {
+    res.status(200).send(user);
+  })
+  .catch((err) => {
+    res.status(401).send(err);
+  });
+};  
 
 module.exports.editUser = (req, res) => {
   const userFields = {
     name: req.body.name,
-    about: req.body.about,
-    avatar: req.body.avatar
+    about: req.body.about
+  }
+  User.findByIdAndUpdate(                    
+    req.user._id, 
+    { $set: userFields },
+    {new: true})
+  .then((user) => {
+    res.status(200).send({user});
+  })
+  .catch((err) => {
+    res.status(401).send(err);
+  });
+};  
+
+module.exports.editAvatar = (req, res) => {
+  const userFields = {
+    avatar: req.body.avatar,
   }
   User.findByIdAndUpdate(                    
     req.user._id, 
