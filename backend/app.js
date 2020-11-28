@@ -19,6 +19,7 @@ mongoose.connect(DATABASE, {
 
 const { PORT = 3000 } = process.env;
 
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -38,6 +39,10 @@ app.delete('/cards/:cardId/likes', auth, deleteLike);
 //serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
+//handle errors
+// app.use((err, req, res, next) => {
+//   res.status(500).send({ message: err.message });
+// });
 //server
 app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`)
