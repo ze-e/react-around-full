@@ -6,6 +6,8 @@ const app = express();
 
 const { DATABASE }  = require('./config/db_config')
 const auth = require('./middleware/auth');
+const errorHandlder = require('./middleware/errorHandler');
+
 const { login, createUser, editUser, deleteUser } = require('./controllers/user');
 const { getCards, createCard, deleteCard, addLike, deleteLike } = require('./controllers/card');
 
@@ -17,7 +19,7 @@ mongoose.connect(DATABASE, {
   useUnifiedTopology: true,
 });
 
-const { PORT = 3000 } = process.env;
+const { PORT = 5000 } = process.env;
 
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -43,6 +45,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use((err, req, res, next) => {
 //   res.status(500).send({ message: err.message });
 // });
+app.use(errorHandlder);
+
 //server
 app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`)

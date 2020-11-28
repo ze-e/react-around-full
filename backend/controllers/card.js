@@ -26,7 +26,7 @@ module.exports.deleteCard = (req, res) => {
           res.status(200).send({card});
         })
         .catch((err) => {
-          res.status(401).send({ message: err.message });
+          res.status(401).send(err);
         });
       })
     .catch((err) => res.status(401).send(err));
@@ -47,7 +47,7 @@ module.exports.addLike = (req, res) => {
           res.status(200).send({card});
         })
         .catch((err) => {
-          res.status(401).send({ message: err.message });
+          res.status(401).send(err);
         });
       })
     .catch((err) => res.status(401).send(err));
@@ -67,7 +67,7 @@ module.exports.deleteLike = (req, res) => {
           res.status(200).send({card});
         })
         .catch((err) => {
-          res.status(401).send({ message: err.message });
+          res.status(401).send(err);
         });
       })
     .catch((err) => res.status(401).send(err));

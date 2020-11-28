@@ -30,7 +30,7 @@ module.exports.login = (req, res) => {
     res.status(200).send({token});
   })
   .catch((err) => {
-    res.status(401).send({ message: err.message });
+    res.status(401).send(err);
   });
 };  
 
@@ -49,7 +49,7 @@ module.exports.editUser = (req, res) => {
     res.status(200).send({user});
   })
   .catch((err) => {
-    res.status(401).send({ message: err.message });
+    res.status(401).send(err);
   });
 };  
 
@@ -59,6 +59,6 @@ module.exports.deleteUser = (req, res) =>  {
     res.status(200).send({user});
   })
   .catch((err) => {
-    res.status(401).send({ message: err.message });
+    res.status(401).send(err);
   });
 }
