@@ -1,5 +1,3 @@
-const { celebrate, Joi } = require('celebrate');
-
 const Card = require('../models/Card');
 
 module.exports.getCards = (req, res) => {

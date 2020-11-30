@@ -1,7 +1,6 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { celebrate, Joi } = require('celebrate');
 
 module.exports.createUser = (req, res) => 
   bcrypt.hash(req.body.password, 10)
