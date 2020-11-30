@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { celebrate, Joi } = require('celebrate');
 
 module.exports.createUser = (req, res) => 
   bcrypt.hash(req.body.password, 10)
@@ -12,11 +13,10 @@ module.exports.createUser = (req, res) =>
       about: req.body.about,
       avatar: req.body.avatar
     })
-    .catch((err) => res.status(400).send(err));
+  .catch((err) => res.status(400).send(err.message));
   })
   .then((user) => res.send(user))
-  .catch((err) => res.status(400).send(err));
-
+  .catch((err) => res.status(500).send(err.message));
 
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
@@ -30,7 +30,7 @@ module.exports.login = (req, res) => {
     res.status(200).send({token});
   })
   .catch((err) => {
-    res.status(401).send(err);
+    res.status(401).send(err.message);
   });
 };  
 
@@ -40,7 +40,7 @@ module.exports.getUser = (req, res) => {
     res.status(200).send(user);
   })
   .catch((err) => {
-    res.status(401).send(err);
+    res.status(401).send(err.message);
   });
 };  
 
@@ -57,7 +57,7 @@ module.exports.editUser = (req, res) => {
     res.status(200).send({user});
   })
   .catch((err) => {
-    res.status(401).send(err);
+    res.status(401).send(err.message);
   });
 };  
 
@@ -73,7 +73,7 @@ module.exports.editAvatar = (req, res) => {
     res.status(200).send({user});
   })
   .catch((err) => {
-    res.status(401).send(err);
+    res.status(401).send(err.message);
   });
 };  
 
@@ -83,6 +83,6 @@ module.exports.deleteUser = (req, res) =>  {
     res.status(200).send({user});
   })
   .catch((err) => {
-    res.status(401).send(err);
+    res.status(401).send(err.message);
   });
 }

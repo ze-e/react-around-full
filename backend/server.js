@@ -7,11 +7,8 @@ const app = express();
 //dev
 var cors = require('cors')
 
-
 const { DATABASE }  = require('./config/db_config')
 const auth = require('./middleware/auth');
-const errorHandlder = require('./middleware/errorHandler');
-
 const { login, createUser, getUser, editUser, editAvatar, deleteUser } = require('./controllers/user');
 const { getCards, createCard, deleteCard, addLike, deleteLike } = require('./controllers/card');
 
@@ -48,9 +45,6 @@ app.delete('/cards/:cardId/likes', auth, deleteLike);
 
 //serve static files
 app.use(express.static(path.join(__dirname, 'public')));
-
-//handle errors
-app.use(errorHandlder);
 
 //server
 app.listen(PORT, () => {

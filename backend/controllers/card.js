@@ -1,10 +1,12 @@
+const { celebrate, Joi } = require('celebrate');
+
 const Card = require('../models/Card');
 
 module.exports.getCards = (req, res) => {
   Card.find({})
     .populate('owner') 
     .then((cards) => res.status(200).send(cards))
-    .catch((err) => res.status(400).send(err));
+    .catch((err) => res.status(400).send(err.message));
 }
 
 module.exports.createCard = (req, res) => {
@@ -13,8 +15,8 @@ module.exports.createCard = (req, res) => {
     link: req.body.link,
     owner: req.user._id
   })
-    .then((card) => res.status(200).send(card))
-    .catch((err) => res.status(400).send(err));
+  .then((card) => res.status(200).send(card))
+  .catch((err) => res.status(400).send(err.message));
 }
 
 module.exports.deleteCard = (req, res) => {
@@ -22,18 +24,18 @@ module.exports.deleteCard = (req, res) => {
   .populate('owner') 
   .then((card)=>{
     Card.doesUserOwnCard(card, req.user._id)
+    .then((card) => {
+      Card.findByIdAndRemove(card._id)
       .then((card) => {
-        Card.findByIdAndRemove(card._id)
-        .then((card) => {
-          res.status(200).send({card});
-        })
-        .catch((err) => {
-          res.status(401).send(err);
-        });
+        res.status(200).send({card});
       })
-    .catch((err) => res.status(401).send(err));
+      .catch((err) => {
+        res.status(401).send(err.message);
+      });
+    })
+    .catch((err) => res.status(301).send(err.message));
   })
-  .catch((err) => res.status(400).send(err));
+  .catch((err) => res.status(400).send(err.message));
 }
 
 module.exports.addLike = (req, res) => {
@@ -47,10 +49,10 @@ module.exports.addLike = (req, res) => {
       res.status(200).send({card});
     })
     .catch((err) => {
-      res.status(401).send(err);
+      res.status(401).send(err.message);
     });
   })
-.catch((err) => res.status(401).send(err));
+.catch((err) => res.status(401).send(err.message));
 }
 module.exports.deleteLike = (req, res) => {
   Card.findById(req.params.cardId)
@@ -63,8 +65,8 @@ module.exports.deleteLike = (req, res) => {
       res.status(200).send({card});
     })
     .catch((err) => {
-      res.status(401).send(err);
+      res.status(401).send(err.message);
     });
   })
-.catch((err) => res.status(401).send(err));
+.catch((err) => res.status(401).send(err.message));
 }
