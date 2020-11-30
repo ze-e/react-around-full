@@ -3,10 +3,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const app = express();
+const { celebrate, Joi } = require('celebrate');
 Joi.objectId = require('joi-objectid')(Joi);
 
 //dev
-var cors = require('cors')
+const cors = require('cors')
 
 const { DATABASE }  = require('./config/db_config')
 const auth = require('./middleware/auth');
