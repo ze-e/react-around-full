@@ -14,7 +14,6 @@ const app = express();
 const { DATABASE }  = require('./config/db_config')
 const { login, createUser, getUser, editUser, editAvatar, deleteUser } = require('./controllers/user');
 const { getCards, createCard, deleteCard, addLike, deleteLike } = require('./controllers/card');
-//dev
 const cors = require('cors')
 
 //connect to database
