@@ -1,18 +1,21 @@
 const path = require('path');
-const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const app = express();
+
+//middleware
+const { requestLogger, errorLogger } = require('./middleware/logger'); 
 const { celebrate, Joi } = require('celebrate');
 Joi.objectId = require('joi-objectid')(Joi);
-
-//dev
-const cors = require('cors')
-
-const { DATABASE }  = require('./config/db_config')
+const bodyParser = require('body-parser');
 const auth = require('./middleware/auth');
+
+//routes
+const express = require('express');
+const mongoose = require('mongoose');
+const app = express();
+const { DATABASE }  = require('./config/db_config')
 const { login, createUser, getUser, editUser, editAvatar, deleteUser } = require('./controllers/user');
 const { getCards, createCard, deleteCard, addLike, deleteLike } = require('./controllers/card');
+//dev
+const cors = require('cors')
 
 //connect to database
 mongoose.connect(DATABASE, {
@@ -29,8 +32,9 @@ app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(requestLogger);
 
-/* ROUTES */
+/* \/ ROUTES \/ */
 // user routes //
 app.post('/signin',
 celebrate({
@@ -56,7 +60,6 @@ celebrate({
 }), 
 createUser); 
 
-
 app.get('/users/me',
 celebrate({
   body: Joi.object().keys({
@@ -68,7 +71,6 @@ celebrate({
   }),
 }), 
 auth, getUser);
-
 
 app.patch('/users/me',
 celebrate({
@@ -82,7 +84,6 @@ celebrate({
 }), 
 auth, editUser); 
 
-
 app.patch('/users/me/avatar',
 celebrate({
   body: Joi.object().keys({
@@ -94,7 +95,6 @@ celebrate({
   }),
 }), 
 auth, editAvatar); 
-
 
 app.delete('/users/me',
 celebrate({
@@ -121,7 +121,6 @@ celebrate({
 }), 
 auth, getCards);
 
-
 app.post('/cards',
 celebrate({
   body: Joi.object().keys({
@@ -133,7 +132,6 @@ celebrate({
   }),
 }), 
 auth, createCard);
-
 
 app.delete('/cards/:cardId',
 celebrate({
@@ -147,7 +145,6 @@ celebrate({
 }), 
 auth, deleteCard);
 
-
 app.put('/cards/:cardId/likes',
 celebrate({
   body: Joi.object().keys({
@@ -159,7 +156,6 @@ celebrate({
   }),
 }), 
 auth, addLike);
-
 
 app.delete('/cards/:cardId/likes',
 celebrate({
@@ -173,8 +169,10 @@ celebrate({
 }), 
 auth, deleteLike);
 
+/* /\ ROUTES /\ */
 
-/* ROUTES */
+//errorlogger
+app.use(errorLogger);
 
 //serve static files
 app.use(express.static(path.join(__dirname, 'public')));
