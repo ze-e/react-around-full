@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
+const AuthError = require('../config/errors/AuthError');
 
 const handleAuthError = (res) => {
-  res.status(401).send({ message: 'Authorization Error' });
+  next(new AuthError({message: 'Authorization Error', status: 401 })); 
 };
 
 module.exports = (req, res, next) => {
@@ -23,4 +24,5 @@ module.exports = (req, res, next) => {
   req.user = payload; 
 
   next(); 
+
 };

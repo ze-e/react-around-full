@@ -2,6 +2,9 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const RequestError = require('../config/errors/RequestError');
+const NotFoundError = require('../config/errors/NotFoundError');
+
 module.exports.createUser = (req, res) => 
   bcrypt.hash(req.body.password, 10)
   .then((hash) =>{
@@ -12,10 +15,10 @@ module.exports.createUser = (req, res) =>
       about: req.body.about,
       avatar: req.body.avatar
     })
-  .catch((err) => res.status(400).send(err.message));
+  .catch((err) => res.send(new Error({message: 'could not create user', status: 500 })));
   })
   .then((user) => res.send(user))
-  .catch((err) => res.status(500).send(err.message));
+  .catch((err) => res.send(new Error({message: 'could not create user', status: 500 })));
 
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
@@ -28,9 +31,7 @@ module.exports.login = (req, res) => {
       { expiresIn: '7d' });
     res.status(200).send({token});
   })
-  .catch((err) => {
-    res.status(401).send(err.message);
-  });
+  .catch((err) => res.send(new NotFoundError({message: 'could not find user', status: 401 })));
 };  
 
 module.exports.getUser = (req, res) => {
@@ -38,9 +39,7 @@ module.exports.getUser = (req, res) => {
   .then((user) => {
     res.status(200).send(user);
   })
-  .catch((err) => {
-    res.status(401).send(err.message);
-  });
+  .catch((err) => res.send(new NotFoundError({message: 'could not find user', status: 401 })));
 };  
 
 module.exports.editUser = (req, res) => {
@@ -55,9 +54,7 @@ module.exports.editUser = (req, res) => {
   .then((user) => {
     res.status(200).send({user});
   })
-  .catch((err) => {
-    res.status(401).send(err.message);
-  });
+  .catch((err) => res.send(new NotFoundError({message: 'could not find user', status: 401 })));
 };  
 
 module.exports.editAvatar = (req, res) => {
@@ -71,9 +68,7 @@ module.exports.editAvatar = (req, res) => {
   .then((user) => {
     res.status(200).send({user});
   })
-  .catch((err) => {
-    res.status(401).send(err.message);
-  });
+  .catch((err) => res.send(new NotFoundError({message: 'could not find user', status: 401 })));
 };  
 
 module.exports.deleteUser = (req, res) =>  {
@@ -81,7 +76,5 @@ module.exports.deleteUser = (req, res) =>  {
   .then((user) => {
     res.status(200).send({user});
   })
-  .catch((err) => {
-    res.status(401).send(err.message);
-  });
+  .catch((err) => res.send(new NotFoundError({message: 'could not find user', status: 401 })));
 }
