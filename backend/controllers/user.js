@@ -15,23 +15,25 @@ module.exports.createUser = (req, res) =>
       about: req.body.about,
       avatar: req.body.avatar
     })
-  .catch((err) => res.send(new Error({message: 'could not create user', status: 500 })));
+    .catch((err) => next(err));
   })
   .then((user) => res.send(user))
-  .catch((err) => res.send(new Error({message: 'could not create user', status: 500 })));
+  .catch((err) => next(err));
 
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
-
   return User.findUserByCredentials(email, password)
   .then((user) => {
+    if(!user){
+      throw new NotFoundError({message: 'User unavailable'})
+    }
     const token = jwt.sign(
       { _id: user._id }, 
       'dev-secret',
       { expiresIn: '7d' });
     res.status(200).send({token});
   })
-  .catch((err) => res.send(new NotFoundError({message: 'could not find user', status: 401 })));
+  .catch((err) => next(err));
 };  
 
 module.exports.getUser = (req, res) => {
@@ -39,7 +41,7 @@ module.exports.getUser = (req, res) => {
   .then((user) => {
     res.status(200).send(user);
   })
-  .catch((err) => res.send(new NotFoundError({message: 'could not find user', status: 401 })));
+  .catch((err) => next(err));
 };  
 
 module.exports.editUser = (req, res) => {
@@ -54,7 +56,7 @@ module.exports.editUser = (req, res) => {
   .then((user) => {
     res.status(200).send({user});
   })
-  .catch((err) => res.send(new NotFoundError({message: 'could not find user', status: 401 })));
+  .catch((err) => next(err));
 };  
 
 module.exports.editAvatar = (req, res) => {
@@ -68,7 +70,7 @@ module.exports.editAvatar = (req, res) => {
   .then((user) => {
     res.status(200).send({user});
   })
-  .catch((err) => res.send(new NotFoundError({message: 'could not find user', status: 401 })));
+  .catch((err) => next(err));
 };  
 
 module.exports.deleteUser = (req, res) =>  {
@@ -76,5 +78,5 @@ module.exports.deleteUser = (req, res) =>  {
   .then((user) => {
     res.status(200).send({user});
   })
-  .catch((err) => res.send(new NotFoundError({message: 'could not find user', status: 401 })));
+  .catch((err) => next(err));
 }
