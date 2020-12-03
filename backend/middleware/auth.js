@@ -1,15 +1,13 @@
 const jwt = require('jsonwebtoken');
-const AuthError = require('../config/errors/AuthError');
 
-const handleAuthError = (res) => {
-  next(new AuthError({message: 'Authorization Error', status: 401 })); 
-};
+//errors
+const AuthError = require('../config/errors/AuthError');
 
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization) {
-    return handleAuthError(res);
+    return next(new AuthError({message: 'No authorization token found', status: 401 })); 
   }
 
   const token = authorization;
@@ -18,7 +16,8 @@ module.exports = (req, res, next) => {
   try {
     payload = jwt.verify(token, 'dev-secret');
   } catch (err) {
-    return handleAuthError(res);
+    return next(new AuthError({message: 'Invalid token', status: 401 })); 
+
   }
 
   req.user = payload; 

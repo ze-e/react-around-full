@@ -1,10 +1,21 @@
 const Card = require('../models/Card');
 
+//errors
+const NotFoundError = require('../config/errors/NotFoundError');
+const RequestError = require('../config/errors/RequestError');
+const PermissionError = require('../config/errors/PermissionError');
+
+
 module.exports.getCards = (req, res) => {
   Card.find({})
     .populate('owner') 
-    .then((cards) => res.status(200).send(cards))
-    .catch((err) => res.status(400).send(err.message));
+    .then((cards) => {
+      if(!cards){
+        throw new NotFoundError({message: 'Cards unavailable' })
+      }
+      res.status(200).send(cards)
+    })
+    .catch((err) => next(new RequestError({message: `Could not get cards: ${err.message}`})));
 }
 
 module.exports.createCard = (req, res) => {
@@ -14,7 +25,7 @@ module.exports.createCard = (req, res) => {
     owner: req.user._id
   })
   .then((card) => res.status(200).send(card))
-  .catch((err) => res.status(400).send(err.message));
+  .catch((err) => next(new RequestError({message: `Could not create card: ${err.message}`})));
 }
 
 module.exports.deleteCard = (req, res) => {
@@ -27,13 +38,11 @@ module.exports.deleteCard = (req, res) => {
       .then((card) => {
         res.status(200).send({card});
       })
-      .catch((err) => {
-        res.status(401).send(err.message);
-      });
+      .catch((err) => next(new NotFoundError({message: 'Card unavailable'})));
     })
-    .catch((err) => res.status(301).send(err.message));
+    .catch((err) => next(new PermissionError({message: 'User does not own card'})));
   })
-  .catch((err) => res.status(400).send(err.message));
+  .catch((err) => next(new RequestError({message: 'Could not delete card'})));
 }
 
 module.exports.addLike = (req, res) => {
@@ -46,12 +55,11 @@ module.exports.addLike = (req, res) => {
     .then((card) => {
       res.status(200).send({card});
     })
-    .catch((err) => {
-      res.status(401).send(err.message);
-    });
+    .catch((err) => next(new RequestError({message: 'Could not like card'})));
   })
-.catch((err) => res.status(401).send(err.message));
+.catch((err) => next(new NotFoundError({message: 'Card unavailable'})));
 }
+
 module.exports.deleteLike = (req, res) => {
   Card.findById(req.params.cardId)
   .then((card) => {
@@ -62,9 +70,7 @@ module.exports.deleteLike = (req, res) => {
     .then((card) => {
       res.status(200).send({card});
     })
-    .catch((err) => {
-      res.status(401).send(err.message);
-    });
+    .catch((err) => .catch((err) => next(new RequestError({message: 'Could not unlike card'})));
   })
-.catch((err) => res.status(401).send(err.message));
+.catch((err) => next(new NotFoundError({message: 'Card unavailable'})));
 }

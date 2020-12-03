@@ -2,8 +2,9 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const RequestError = require('../config/errors/RequestError');
+//errors
 const NotFoundError = require('../config/errors/NotFoundError');
+const RequestError = require('../config/errors/RequestError');
 
 module.exports.createUser = (req, res) => 
   bcrypt.hash(req.body.password, 10)
@@ -15,10 +16,10 @@ module.exports.createUser = (req, res) =>
       about: req.body.about,
       avatar: req.body.avatar
     })
-    .catch((err) => next(err));
+    .catch((err) => next(new NotFoundError({message: 'User unavailable'})));
   })
   .then((user) => res.send(user))
-  .catch((err) => next(err));
+  .catch((err) => next(new RequestError({message: `Could not create user: ${err.message}` })));
 
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
@@ -33,7 +34,7 @@ module.exports.login = (req, res) => {
       { expiresIn: '7d' });
     res.status(200).send({token});
   })
-  .catch((err) => next(err));
+  .catch((err) => next(new RequestError({message: `Could not login: ${err.message}` })));
 };  
 
 module.exports.getUser = (req, res) => {
@@ -41,7 +42,7 @@ module.exports.getUser = (req, res) => {
   .then((user) => {
     res.status(200).send(user);
   })
-  .catch((err) => next(err));
+  .catch((err) => next(new RequestError({message: `Could not get user: ${err.message}` })));
 };  
 
 module.exports.editUser = (req, res) => {
@@ -54,9 +55,12 @@ module.exports.editUser = (req, res) => {
     { $set: userFields },
     {new: true})
   .then((user) => {
+    if(!user){
+      throw new NotFoundError({message: 'User unavailable'})
+    }
     res.status(200).send({user});
   })
-  .catch((err) => next(err));
+  .catch((err) => next(new RequestError({message: `Could not edit user: ${err.message}` })));
 };  
 
 module.exports.editAvatar = (req, res) => {
@@ -68,15 +72,21 @@ module.exports.editAvatar = (req, res) => {
     { $set: userFields },
     {new: true})
   .then((user) => {
+    if(!user){
+      throw new NotFoundError({message: 'User unavailable'})
+    }
     res.status(200).send({user});
   })
-  .catch((err) => next(err));
+  .catch((err) => next(new RequestError({message: `Could not edit avatar: ${err.message}` })));
 };  
 
 module.exports.deleteUser = (req, res) =>  {
   User.findByIdAndRemove(req.user.id)
   .then((user) => {
+    if(!user){
+      throw new NotFoundError({message: 'User unavailable'})
+    }
     res.status(200).send({user});
   })
-  .catch((err) => next(err));
+  .catch((err) => next(new RequestError({message: `Could not delete user: ${err.message}` })));
 }
