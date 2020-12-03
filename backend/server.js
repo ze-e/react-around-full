@@ -1,11 +1,11 @@
 const path = require('path');
 
 //middleware
-const { requestLogger, errorLogger } = require('./middleware/logger'); 
 const { celebrate, Joi } = require('celebrate');
 Joi.objectId = require('joi-objectid')(Joi);
 const bodyParser = require('body-parser');
 const auth = require('./middleware/auth');
+const { requestLogger, errorLogger } = require('./middleware/logger'); 
 
 //routes
 const express = require('express');
@@ -177,11 +177,20 @@ auth, deleteLike);
 
 /* /\ ROUTES /\ */
 
-//errorlogger
-app.use(errorLogger);
-
 //serve static files
 app.use(express.static(path.join(__dirname, 'public')));
+
+//errorlogger
+app.use((err, req, res, next) => {
+const { status = 500, message } = err;
+res.status(status).send({
+  message: status === 500
+  ? 'An error occurred on the server'
+  : message
+  });
+});
+
+app.use(errorLogger);
 
 //server
 app.listen(PORT, () => {
