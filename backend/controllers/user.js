@@ -55,9 +55,6 @@ module.exports.editUser = (req, res) => {
     { $set: userFields },
     {new: true})
   .then((user) => {
-    if(!user){
-      throw new NotFoundError({message: 'User unavailable'})
-    }
     res.status(200).send({user});
   })
   .catch((err) => next(new RequestError({message: `Could not edit user: ${err.message}` })));

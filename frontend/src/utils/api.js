@@ -1,4 +1,3 @@
-//import {token, groupId} from './config';
 import {baseURL} from './config';
 class Api{
   constructor({baseURL}){

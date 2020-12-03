@@ -70,7 +70,7 @@ module.exports.deleteLike = (req, res) => {
     .then((card) => {
       res.status(200).send({card});
     })
-    .catch((err) => .catch((err) => next(new RequestError({message: 'Could not unlike card'})));
+    .catch((err) =>  next(new RequestError({message: 'Could not unlike card'})));
   })
 .catch((err) => next(new NotFoundError({message: 'Card unavailable'})));
 }

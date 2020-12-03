@@ -1,5 +1,5 @@
 const path = require('path');
-
+require('dotenv').config(); 
 //middleware
 const { celebrate, Joi } = require('celebrate');
 Joi.objectId = require('joi-objectid')(Joi);
@@ -26,7 +26,6 @@ mongoose.connect(DATABASE, {
 
 const { PORT = 5000 } = process.env;
 
-//dev
 app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -47,9 +46,6 @@ celebrate({
   body: Joi.object().keys({
     email: Joi.string().email().required(),
     password: Joi.string().required(),
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().uri().pattern(/^http:\/\/|https:\/\//),
   }),
 }), 
 login);
@@ -59,30 +55,15 @@ celebrate({
   body: Joi.object().keys({
     email: Joi.string().email().required(),
     password: Joi.string().required(),
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().uri().pattern(/^http:\/\/|https:\/\//),
   }),
 }), 
 createUser); 
 
-app.get('/users/me',
-celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().uri().pattern(/^http:\/\/|https:\/\//),  
-  }),
-}), 
-auth, getUser);
+app.get('/users/me', auth, getUser);
 
 app.patch('/users/me',
 celebrate({
   body: Joi.object().keys({
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
     avatar: Joi.string().uri().pattern(/^http:\/\/|https:\/\//),  
@@ -93,8 +74,6 @@ auth, editUser);
 app.patch('/users/me/avatar',
 celebrate({
   body: Joi.object().keys({
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
     avatar: Joi.string().uri().pattern(/^http:\/\/|https:\/\//),  
@@ -102,36 +81,16 @@ celebrate({
 }), 
 auth, editAvatar); 
 
-app.delete('/users/me',
-celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().uri().pattern(/^http:\/\/|https:\/\//),  
-  }),
-}), 
-auth, deleteUser); 
+app.delete('/users/me', auth, deleteUser); 
 
 // card routes //
-app.get('/cards', 
-celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    link: Joi.string().uri().pattern(/^http:\/\/|https:\/\//),
-    owner: Joi.objectId(),
-    likes: Joi.array().items(Joi.objectId()),
-    createdAt: Joi.date(),
-  }),
-}), 
-auth, getCards);
+app.get('/cards', auth, getCards);
 
 app.post('/cards',
 celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    link: Joi.string().uri().pattern(/^http:\/\/|https:\/\//),
+    name: Joi.string().min(2).max(30).required(),
+    link: Joi.string().uri().pattern(/^http:\/\/|https:\/\//).required(),
     owner: Joi.objectId(),
     likes: Joi.array().items(Joi.objectId()),
     createdAt: Joi.date(),
@@ -139,41 +98,11 @@ celebrate({
 }), 
 auth, createCard);
 
-app.delete('/cards/:cardId',
-celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    link: Joi.string().uri().pattern(/^http:\/\/|https:\/\//),
-    owner: Joi.objectId(),
-    likes: Joi.array().items(Joi.objectId()),
-    createdAt: Joi.date(),
-  }),
-}), 
-auth, deleteCard);
+app.delete('/cards/:cardId', auth, deleteCard);
 
-app.put('/cards/:cardId/likes',
-celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    link: Joi.string().uri().pattern(/^http:\/\/|https:\/\//),
-    owner: Joi.objectId(),
-    likes: Joi.array().items(Joi.objectId()),
-    createdAt: Joi.date(),
-  }),
-}), 
-auth, addLike);
+app.put('/cards/:cardId/likes', auth, addLike);
 
-app.delete('/cards/:cardId/likes',
-celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    link: Joi.string().uri().pattern(/^http:\/\/|https:\/\//),
-    owner: Joi.objectId(),
-    likes: Joi.array().items(Joi.objectId()),
-    createdAt: Joi.date(),
-  }),
-}), 
-auth, deleteLike);
+app.delete('/cards/:cardId/likes', auth, deleteLike);
 
 /* /\ ROUTES /\ */
 
