@@ -65,8 +65,7 @@ app.patch('/users/me',
 celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().uri().pattern(/^http:\/\/|https:\/\//),  
+    about: Joi.string().min(2).max(30), 
   }),
 }), 
 auth, editUser); 
@@ -74,8 +73,6 @@ auth, editUser);
 app.patch('/users/me/avatar',
 celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
     avatar: Joi.string().uri().pattern(/^http:\/\/|https:\/\//),  
   }),
 }), 
