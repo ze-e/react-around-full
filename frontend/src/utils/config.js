@@ -1,1 +1,1 @@
-export const {baseURL ='http://api.zrexrodriguez.students.nomoreparties.site'} = process.env.PUBLIC_URL;
+export const {baseURL ='https://api.zrexrodriguez.students.nomoreparties.site'} = process.env.PUBLIC_URL;
