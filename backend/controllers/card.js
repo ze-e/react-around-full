@@ -5,7 +5,6 @@ const NotFoundError = require('../config/errors/NotFoundError');
 const RequestError = require('../config/errors/RequestError');
 const PermissionError = require('../config/errors/PermissionError');
 
-
 module.exports.getCards = (req, res) => {
   Card.find({})
     .populate('owner') 
