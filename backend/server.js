@@ -1,4 +1,3 @@
-const path = require('path');
 require('dotenv').config(); 
 //middleware
 const { celebrate, Joi } = require('celebrate');
@@ -102,9 +101,6 @@ app.put('/cards/:cardId/likes', auth, addLike);
 app.delete('/cards/:cardId/likes', auth, deleteLike);
 
 /* /\ ROUTES /\ */
-
-//serve static files
-app.use(express.static(path.join(__dirname, 'public')));
 
 //errorlogger
 app.use((err, req, res, next) => {
