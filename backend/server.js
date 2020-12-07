@@ -1,7 +1,6 @@
-require('dotenv').config(); 
 //middleware
-const { celebrate, Joi } = require('celebrate');
-Joi.objectId = require('joi-objectid')(Joi);
+const { celebrate, errors, Joi } = require('celebrate');
+//Joi.objectId = require('joi-objectid')(Joi);
 const bodyParser = require('body-parser');
 const auth = require('./middleware/auth');
 const { requestLogger, errorLogger } = require('./middleware/logger'); 
@@ -102,16 +101,18 @@ app.delete('/cards/:cardId/likes', auth, deleteLike);
 
 /* /\ ROUTES /\ */
 
-//errorlogger
+// celebrate errors
+app.use(errors());
+//normal errors
 app.use((err, req, res, next) => {
-const { status = 500, message } = err;
+const { statusCode = 500, message } = err;
 res.status(status).send({
   message: status === 500
   ? 'An error occurred on the server'
   : message
   });
 });
-
+//errorlogger
 app.use(errorLogger);
 
 //server
