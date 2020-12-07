@@ -57,10 +57,19 @@ celebrate({
 }), 
 createUser); 
 
-app.get('/users/me', auth, getUser);
+app.get('/users/me',
+celebrate({
+  headers: Joi.object().keys({
+    Authorization: Joi.string().alphanum()
+  }).unknown(true),
+}), 
+auth, getUser);
 
 app.patch('/users/me',
 celebrate({
+  headers: Joi.object().keys({
+    Authorization: Joi.string().alphanum()
+  }).unknown(true),
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30), 
@@ -70,34 +79,79 @@ auth, editUser);
 
 app.patch('/users/me/avatar',
 celebrate({
+  headers: Joi.object().keys({
+    Authorization: Joi.string().alphanum()
+  }).unknown(true),
   body: Joi.object().keys({
     avatar: Joi.string().uri().pattern(/^http:\/\/|https:\/\//),  
   }),
 }), 
 auth, editAvatar); 
 
-app.delete('/users/me', auth, deleteUser); 
+app.delete('/users/me',
+celebrate({
+  headers: Joi.object().keys({
+    Authorization: Joi.string().alphanum()
+  }).unknown(true),
+}), 
+auth, deleteUser); 
 
 // card routes //
-app.get('/cards', auth, getCards);
+app.get('/cards',
+celebrate({
+  headers: Joi.object().keys({
+    Authorization: Joi.string().alphanum()
+  }).unknown(true),
+}),
+auth, getCards);
 
 app.post('/cards',
 celebrate({
+  headers: Joi.object().keys({
+    Authorization: Joi.string().alphanum()
+  }).unknown(true),
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30).required(),
     link: Joi.string().uri().pattern(/^http:\/\/|https:\/\//).required(),
-    owner: Joi.objectId(),
-    likes: Joi.array().items(Joi.objectId()),
+    owner: Joi.string().hex(),
+    likes: Joi.array().items(Joi.string().hex()),
     createdAt: Joi.date(),
   }),
 }), 
 auth, createCard);
 
-app.delete('/cards/:cardId', auth, deleteCard);
+app.delete('/cards/:cardId',
+celebrate({
+  headers: Joi.object().keys({
+    Authorization: Joi.string().alphanum()
+  }).unknown(true),
+  params: Joi.object().keys({
+    cardId: Joi.string().alphanum().length(24),
+  }),
+}), 
+auth, deleteCard);
 
-app.put('/cards/:cardId/likes', auth, addLike);
+app.put('/cards/:cardId/likes',
+celebrate({
+  headers: Joi.object().keys({
+    Authorization: Joi.string().alphanum()
+  }).unknown(true),
+  params: Joi.object().keys({
+    cardId: Joi.string().alphanum().length(24),
+  }),
+}), 
+auth, addLike);
 
-app.delete('/cards/:cardId/likes', auth, deleteLike);
+app.delete('/cards/:cardId/likes',
+celebrate({
+  headers: Joi.object().keys({
+    Authorization: Joi.string().alphanum()
+  }).unknown(true),
+  params: Joi.object().keys({
+    cardId: Joi.string().alphanum().length(24),
+  }),
+}), 
+auth, deleteLike);
 
 /* /\ ROUTES /\ */
 
@@ -106,8 +160,8 @@ app.use(errors());
 //normal errors
 app.use((err, req, res, next) => {
 const { statusCode = 500, message } = err;
-res.status(status).send({
-  message: status === 500
+res.status(statusCode).send({
+  message: statusCode === 500
   ? 'An error occurred on the server'
   : message
   });
