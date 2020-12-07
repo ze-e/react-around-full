@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization) {
-    return next(new AuthError({message: 'No authorization token found', status: 401 })); 
+    return next(new AuthError('No authorization token found' )); 
   }
 
   const token = authorization;
@@ -16,7 +16,7 @@ module.exports = (req, res, next) => {
   try {
     payload = jwt.verify(token, 'dev-secret');
   } catch (err) {
-    return next(new AuthError({message: 'Invalid token', status: 401 })); 
+    return next(new AuthError('Invalid token' )); 
 
   }
 

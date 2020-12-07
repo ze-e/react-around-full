@@ -16,17 +16,17 @@ module.exports.createUser = (req, res) =>
       about: req.body.about,
       avatar: req.body.avatar
     })
-    .catch((err) => next(new NotFoundError({message: 'User unavailable'})));
+    .catch((err) => next(new NotFoundError('User unavailable')));
   })
   .then((user) => res.send(user))
-  .catch((err) => next(new RequestError({message: `Could not create user: ${err.message}` })));
+  .catch((err) => next(new RequestError(`Could not create user: ${err.message}` )));
 
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
   .then((user) => {
     if(!user){
-      throw new NotFoundError({message: 'User unavailable'})
+      throw new NotFoundError('User unavailable')
     }
     const token = jwt.sign(
       { _id: user._id }, 
@@ -34,7 +34,7 @@ module.exports.login = (req, res) => {
       { expiresIn: '7d' });
     res.status(200).send({token});
   })
-  .catch((err) => next(new RequestError({message: `Could not login: ${err.message}` })));
+  .catch((err) => next(new RequestError(`Could not login: ${err.message}` )));
 };  
 
 module.exports.getUser = (req, res) => {
@@ -42,7 +42,7 @@ module.exports.getUser = (req, res) => {
   .then((user) => {
     res.status(200).send(user);
   })
-  .catch((err) => next(new RequestError({message: `Could not get user: ${err.message}` })));
+  .catch((err) => next(new RequestError(`Could not get user: ${err.message}` )));
 };  
 
 module.exports.editUser = (req, res) => {
@@ -57,7 +57,7 @@ module.exports.editUser = (req, res) => {
   .then((user) => {
     res.status(200).send({user});
   })
-  .catch((err) => next(new RequestError({message: `Could not edit user: ${err.message}` })));
+  .catch((err) => next(new RequestError(`Could not edit user: ${err.message}` )));
 };  
 
 module.exports.editAvatar = (req, res) => {
@@ -70,20 +70,20 @@ module.exports.editAvatar = (req, res) => {
     {new: true})
   .then((user) => {
     if(!user){
-      throw new NotFoundError({message: 'User unavailable'})
+      throw new NotFoundError('User unavailable')
     }
     res.status(200).send({user});
   })
-  .catch((err) => next(new RequestError({message: `Could not edit avatar: ${err.message}` })));
+  .catch((err) => next(new RequestError(`Could not edit avatar: ${err.message}` )));
 };  
 
 module.exports.deleteUser = (req, res) =>  {
   User.findByIdAndRemove(req.user.id)
   .then((user) => {
     if(!user){
-      throw new NotFoundError({message: 'User unavailable'})
+      throw new NotFoundError('User unavailable')
     }
     res.status(200).send({user});
   })
-  .catch((err) => next(new RequestError({message: `Could not delete user: ${err.message}` })));
+  .catch((err) => next(new RequestError(`Could not delete user: ${err.message}` )));
 }

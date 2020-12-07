@@ -10,11 +10,11 @@ module.exports.getCards = (req, res) => {
     .populate('owner') 
     .then((cards) => {
       if(!cards){
-        throw new NotFoundError({message: 'Cards unavailable' })
+        throw new NotFoundError( 'Cards unavailable' )
       }
       res.status(200).send(cards)
     })
-    .catch((err) => next(new RequestError({message: `Could not get cards: ${err.message}`})));
+    .catch((err) => next(new RequestError( `Could not get cards: ${err.message}`)));
 }
 
 module.exports.createCard = (req, res) => {
@@ -24,7 +24,7 @@ module.exports.createCard = (req, res) => {
     owner: req.user._id
   })
   .then((card) => res.status(200).send(card))
-  .catch((err) => next(new RequestError({message: `Could not create card: ${err.message}`})));
+  .catch((err) => next(new RequestError( `Could not create card: ${err.message}`)));
 }
 
 module.exports.deleteCard = (req, res) => {
@@ -37,11 +37,11 @@ module.exports.deleteCard = (req, res) => {
       .then((card) => {
         res.status(200).send({card});
       })
-      .catch((err) => next(new NotFoundError({message: 'Card unavailable'})));
+      .catch((err) => next(new NotFoundError( 'Card unavailable')));
     })
-    .catch((err) => next(new PermissionError({message: 'User does not own card'})));
+    .catch((err) => next(new PermissionError( 'User does not own card')));
   })
-  .catch((err) => next(new RequestError({message: 'Could not delete card'})));
+  .catch((err) => next(new RequestError( 'Could not delete card')));
 }
 
 module.exports.addLike = (req, res) => {
@@ -54,9 +54,9 @@ module.exports.addLike = (req, res) => {
     .then((card) => {
       res.status(200).send({card});
     })
-    .catch((err) => next(new RequestError({message: 'Could not like card'})));
+    .catch((err) => next(new RequestError( 'Could not like card')));
   })
-.catch((err) => next(new NotFoundError({message: 'Card unavailable'})));
+.catch((err) => next(new NotFoundError( 'Card unavailable')));
 }
 
 module.exports.deleteLike = (req, res) => {
@@ -69,7 +69,7 @@ module.exports.deleteLike = (req, res) => {
     .then((card) => {
       res.status(200).send({card});
     })
-    .catch((err) =>  next(new RequestError({message: 'Could not unlike card'})));
+    .catch((err) =>  next(new RequestError( 'Could not unlike card')));
   })
-.catch((err) => next(new NotFoundError({message: 'Card unavailable'})));
+.catch((err) => next(new NotFoundError( 'Card unavailable')));
 }
