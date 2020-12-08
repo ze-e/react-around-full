@@ -28,10 +28,7 @@ module.exports.createCard = (req, res, next) => {
 }
 
 module.exports.deleteCard = (req, res, next) => {
-  Card.findById(req.params.cardId)
-  .populate('owner') 
-  .then((card)=>{
-    Card.doesUserOwnCard(card, req.user._id)
+    Card.doesUserOwnCard(req.params.cardId, req.user._id)
     .then((card) => {
       Card.findByIdAndRemove(card._id)
       .then((card) => {
@@ -40,8 +37,6 @@ module.exports.deleteCard = (req, res, next) => {
       .catch((err) => next(new NotFoundError('Card unavailable')));
     })
     .catch((err) => next(new PermissionError('User does not own card')));
-  })
-  .catch((err) => next(new RequestError('Could not delete card')));
 }
 
 module.exports.addLike = (req, res, next) => {
