@@ -3,7 +3,6 @@ require('dotenv').config();
 
 //middleware
 const { celebrate, errors, Joi } = require('celebrate');
-//Joi.objectId = require('joi-objectid')(Joi);
 const bodyParser = require('body-parser');
 const auth = require('./middleware/auth');
 const { requestLogger, errorLogger } = require('./middleware/logger'); 
@@ -175,5 +174,8 @@ app.use(errorLogger);
 //server
 app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
-  console.log(process.env.NODE_ENV);
+  const message = process.env 
+  ? "environment variables loaded" : 
+  "environment variables failed to load. Using default config settings";
+  console.log(message);
 });
