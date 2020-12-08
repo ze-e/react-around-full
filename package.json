@@ -1,6 +1,6 @@
 {
   "name": "react-around-auth",
-  "version": "0.1.0",
+  "version": "12.14.0",
   "main": "backend/server.js",
   "private": true,
   "dependencies": {
