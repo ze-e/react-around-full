@@ -59,8 +59,8 @@ app.use(errorLogger);
 //server
 app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
-  const message = process.env 
-  ? "environment variables loaded" : 
-  "environment variables failed to load. Using default config settings";
+  const message = !process.env.NODE_ENV
+  ? "environment variables failed to load. Using default config settings"
+  : "environment variables loaded"; 
   console.log(message);
 });

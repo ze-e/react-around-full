@@ -1,2 +1,2 @@
 require('dotenv').config(); 
-export const {baseURL ='http://localhost:5000'} = process.env.PUBLIC_URL;
+export const {baseURL ='https://api.zrexrodriguez.students.nomoreparties.site'} = process.env.PUBLIC_URL;
