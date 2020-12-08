@@ -1,3 +1,6 @@
+//config
+require('dotenv').config(); 
+
 //middleware
 const { celebrate, errors, Joi } = require('celebrate');
 //Joi.objectId = require('joi-objectid')(Joi);
@@ -171,5 +174,6 @@ app.use(errorLogger);
 
 //server
 app.listen(PORT, () => {
-  console.log(`server running on port ${PORT}`)
+  console.log(`server running on port ${PORT}`);
+  console.log(process.env.NODE_ENV);
 });

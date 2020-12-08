@@ -1,6 +1,8 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+require('dotenv').config(); 
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 //errors
 const NotFoundError = require('../config/errors/NotFoundError');
@@ -28,9 +30,10 @@ module.exports.login = (req, res, next) => {
     if(!user){
       throw new NotFoundError('User unavailable')
     }
+    
     const token = jwt.sign(
       { _id: user._id }, 
-      'dev-secret',
+      NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
       { expiresIn: '7d' });
     res.status(200).send({token});
   })

@@ -36,10 +36,10 @@ const cardSchema = new mongoose.Schema({
 cardSchema.statics.doesUserOwnCard = function (cardId, ownerId) {
   return this.findById(cardId)
     .then((card) => {
-      return card.owner._id == ownerId ? card : Promise.reject(new Error('user does not own card')); 
+      return card.owner._id == ownerId ? card : Promise.reject(new Error('User does not own card')); 
     })
     .catch( e => {
-      return Promise.reject(new Error('user does not own card'));
+      return Promise.reject(new Error('User does not own card'));
      })
 };
 
