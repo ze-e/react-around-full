@@ -2,9 +2,8 @@
 require('dotenv').config(); 
 
 //middleware
-const { celebrate, errors, Joi } = require('celebrate');
+const { errors } = require('celebrate');
 const bodyParser = require('body-parser');
-const auth = require('./middleware/auth');
 const { requestLogger, errorLogger } = require('./middleware/logger'); 
 
 //routes
@@ -12,8 +11,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const { DATABASE }  = require('./config/db_config')
-const { login, createUser, getUser, editUser, editAvatar, deleteUser } = require('./controllers/user');
-const { getCards, createCard, deleteCard, addLike, deleteLike } = require('./controllers/card');
 const cors = require('cors')
 
 //connect to database
@@ -32,7 +29,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(requestLogger);
 
-/* \/ ROUTES \/ */
 //test routes
 app.get('/crash-test', () => {
   setTimeout(() => {
@@ -40,122 +36,11 @@ app.get('/crash-test', () => {
   }, 0);
 }); 
 
-// user routes //
-app.post('/signin',
-celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
-  }),
-}), 
-login);
+// user routes
+app.use('/', require('./routes/user'));
 
-app.post('/signup', 
-celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
-  }),
-}), 
-createUser); 
-
-app.get('/users/me',
-celebrate({
-  headers: Joi.object().keys({
-    Authorization: Joi.string().alphanum()
-  }).unknown(true),
-}), 
-auth, getUser);
-
-app.patch('/users/me',
-celebrate({
-  headers: Joi.object().keys({
-    Authorization: Joi.string().alphanum()
-  }).unknown(true),
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30), 
-  }),
-}), 
-auth, editUser); 
-
-app.patch('/users/me/avatar',
-celebrate({
-  headers: Joi.object().keys({
-    Authorization: Joi.string().alphanum()
-  }).unknown(true),
-  body: Joi.object().keys({
-    avatar: Joi.string().uri().pattern(/^http:\/\/|https:\/\//),  
-  }),
-}), 
-auth, editAvatar); 
-
-app.delete('/users/me',
-celebrate({
-  headers: Joi.object().keys({
-    Authorization: Joi.string().alphanum()
-  }).unknown(true),
-}), 
-auth, deleteUser); 
-
-// card routes //
-app.get('/cards',
-celebrate({
-  headers: Joi.object().keys({
-    Authorization: Joi.string().alphanum()
-  }).unknown(true),
-}),
-auth, getCards);
-
-app.post('/cards',
-celebrate({
-  headers: Joi.object().keys({
-    Authorization: Joi.string().alphanum()
-  }).unknown(true),
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30).required(),
-    link: Joi.string().uri().pattern(/^http:\/\/|https:\/\//).required(),
-    owner: Joi.string().hex(),
-    likes: Joi.array().items(Joi.string().hex()),
-    createdAt: Joi.date(),
-  }),
-}), 
-auth, createCard);
-
-app.delete('/cards/:cardId',
-celebrate({
-  headers: Joi.object().keys({
-    Authorization: Joi.string().alphanum()
-  }).unknown(true),
-  params: Joi.object().keys({
-    cardId: Joi.string().alphanum().length(24),
-  }),
-}), 
-auth, deleteCard);
-
-app.put('/cards/:cardId/likes',
-celebrate({
-  headers: Joi.object().keys({
-    Authorization: Joi.string().alphanum()
-  }).unknown(true),
-  params: Joi.object().keys({
-    cardId: Joi.string().alphanum().length(24),
-  }),
-}), 
-auth, addLike);
-
-app.delete('/cards/:cardId/likes',
-celebrate({
-  headers: Joi.object().keys({
-    Authorization: Joi.string().alphanum()
-  }).unknown(true),
-  params: Joi.object().keys({
-    cardId: Joi.string().alphanum().length(24),
-  }),
-}), 
-auth, deleteLike);
-
-/* /\ ROUTES /\ */
+// card routes
+app.use('/', require('./routes/card'));
 
 // celebrate errors
 app.use(errors());
