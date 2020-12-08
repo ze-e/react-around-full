@@ -37,7 +37,8 @@
     "eject": "react-scripts eject",
     "server": "nodemon app.js",
     "client": "npm start --prefix frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install npm && cd frontend && run build"
   },
   "eslintConfig": {
     "extends": [
