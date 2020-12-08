@@ -1,5 +1,5 @@
 //config
-require('dotenv').config(); 
+require('dotenv').config({ path: '../' }); 
 
 //middleware
 const { errors } = require('celebrate');
