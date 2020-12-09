@@ -66,7 +66,7 @@ if(process.env.NODE_ENV === 'production'){
 
 //server
 app.listen(process.env.PORT || 5000, () => {
-  console.log(`server running on port ${PORT}`);
+  console.log(`server running`);
   const message = !process.env.NODE_ENV
   ? "environment variables failed to load. Using default config settings"
   : "environment variables loaded"; 
