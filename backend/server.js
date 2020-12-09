@@ -23,8 +23,6 @@ mongoose.connect(DATABASE, {
   useUnifiedTopology: true,
 });
 
-const { PORT = 5000 } = process.env;
-
 app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -67,7 +65,7 @@ if(process.env.NODE_ENV === 'production'){
 }
 
 //server
-app.listen(PORT, () => {
+app.listen(process.env.PORT || 5000, () => {
   console.log(`server running on port ${PORT}`);
   const message = !process.env.NODE_ENV
   ? "environment variables failed to load. Using default config settings"
