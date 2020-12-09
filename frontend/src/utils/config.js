@@ -1,4 +1,6 @@
 require('dotenv').config({ path: '../../../' });
 const path = require('path');
-export const baseURL = path.resolve(__dirname,'../../..','backend','server.js');
+const baseURL = path.resolve(__dirname,'../../..','backend','server.js');
+
+module.exports = baseURL;
 //export const baseURL = process.env.PUBLIC_URL;
