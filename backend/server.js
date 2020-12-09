@@ -57,12 +57,14 @@ res.status(statusCode).send({
 app.use(errorLogger);
 
 //serve static assets 
-if(process.env.NODE_ENV === 'production'){
+//if(process.env.NODE_ENV === 'production'){
   app.use(express.static('frontend/build'));
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve('..','frontend','build'))
+    //res.sendFile(path.resolve('..','frontend','build'))
+    res.sendFile('../frontend/build')
+
   })
-}
+//}
 
 //server
 app.listen(process.env.PORT || 5000, () => {
