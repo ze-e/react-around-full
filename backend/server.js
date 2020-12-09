@@ -2,6 +2,7 @@ const path = require('path');
 
 //config
 require('dotenv').config({ path: '../' }); 
+const baseURL = require('../frontend/src/utils/config');
 
 //middleware
 const { errors } = require('celebrate');
@@ -66,7 +67,7 @@ if(process.env.NODE_ENV === 'production'){
 
 //server
 app.listen(PORT = process.env.PORT || 5000, () => {
-  console.log(`server running on port ${PORT}`);
+  console.log(`server running on port ${PORT} api at ${baseURL}`);
   const message = !process.env.NODE_ENV
   ? "environment variables failed to load. Using default config settings"
   : "environment variables loaded"; 
