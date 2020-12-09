@@ -14,9 +14,6 @@ const mongoose = require('mongoose');
 const app = express();
 const { DATABASE }  = require('./config/db_config')
 const cors = require('cors');
-const { dirname } = require('path');
-
-const { PORT = 5000} = process.env.PORT;
 
 //connect to database
 mongoose.connect(DATABASE, {
@@ -68,7 +65,7 @@ if(process.env.NODE_ENV === 'production'){
 }
 
 //server
-app.listen(PORT || 5000, () => {
+app.listen(PORT = process.env.PORT || 5000, () => {
   console.log(`server running on port ${PORT}`);
   const message = !process.env.NODE_ENV
   ? "environment variables failed to load. Using default config settings"
