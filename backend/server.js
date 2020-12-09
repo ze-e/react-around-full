@@ -13,7 +13,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const { DATABASE }  = require('./config/db_config')
-const cors = require('cors')
+const cors = require('cors');
+const { dirname } = require('path');
+
+const { PORT = 5000} = process.env.PORT;
 
 //connect to database
 mongoose.connect(DATABASE, {
@@ -57,17 +60,15 @@ res.status(statusCode).send({
 app.use(errorLogger);
 
 //serve static assets 
-//if(process.env.NODE_ENV === 'production'){
-  app.use(express.static('frontend/build'));
+if(process.env.NODE_ENV === 'production'){
+  app.use(express.static('../frontend/build'));
   app.get('*', (req, res) => {
-    //res.sendFile(path.resolve('..','frontend','build'))
-    res.sendFile('../frontend/build')
-
+    res.sendFile(path.join(__dirname,'..','frontend','build'))
   })
-//}
+}
 
 //server
-app.listen(process.env.PORT || 5000, () => {
+app.listen(PORT, () => {
   console.log(`server running`);
   const message = !process.env.NODE_ENV
   ? "environment variables failed to load. Using default config settings"
