@@ -22,8 +22,8 @@ function Card(props){
 
   //control delete button visibility
   React.useEffect(() => {
-    if(props.card.owner){
-      props.card.owner === currentUser._id ? setIsOwn(true) : setIsOwn(false);
+    if(props.card.owner._id){
+      props.card.owner._id === currentUser._id ? setIsOwn(true) : setIsOwn(false);
     }
   },[props.card])
   //const isOwn = props.card.owner._id === currentUser._id;
