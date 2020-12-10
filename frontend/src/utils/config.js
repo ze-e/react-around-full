@@ -1,1 +1,1 @@
-export const baseURL = 'https://api.zrexrodriguez.students.nomoreparties.site';
+export default baseURL = 'https://api.zrexrodriguez.students.nomoreparties.site';
