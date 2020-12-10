@@ -1,2 +1,4 @@
+//config
 require('dotenv').config(); 
-export const {baseURL ='https://api.zrexrodriguez.students.nomoreparties.site'} = process.env.PUBLIC_URL;
+const {DB_USER='admin', DB_PASSWORD='testing123', DB_NAME='testDB'} = process.env;
+module.exports.DATABASE = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.szyal.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`;
