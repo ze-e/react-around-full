@@ -1,11 +1,7 @@
 {
   "name": "react-around-auth",
-<<<<<<< HEAD
-  "version": "12.14.0",
-=======
   "version": "0.1.0",
   "main": "server.js",
->>>>>>> fix/env
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.5",
@@ -27,15 +23,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-<<<<<<< HEAD
-    "eject": "react-scripts eject"
-=======
     "eject": "react-scripts eject",
     "deploy": "npm run build",
     "server": "cd .. && nodemon app.js --prefix backend",
     "client": "npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\""
->>>>>>> fix/env
   },
   "eslintConfig": {
     "extends": [

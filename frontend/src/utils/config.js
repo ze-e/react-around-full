@@ -1,2 +1,2 @@
-//require('dotenv').config({ path: '../../../' });
+require('dotenv').config({ path: '../../../' });
 export const baseURL = '../../../backend/server.js';
