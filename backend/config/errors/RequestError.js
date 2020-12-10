@@ -5,4 +5,4 @@ class RequestError extends Error {
   }
 }
 
-module.exports = RequestError; 
+module.exports = RequestError;

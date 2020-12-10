@@ -12,8 +12,8 @@ const cardSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(str) {
-          const regex = /^http:\/\/|https:\/\//;
-          return regex.test(str);
+        const regex = /^http:\/\/|https:\/\//;
+        return regex.test(str);
       },
       message: 'Please enter a valid url',
     },
@@ -22,25 +22,21 @@ const cardSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
   },
-  likes:[{
+  likes: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
-    default: []
+    default: [],
   }],
-  createdAt:{
-  type: Date,
-  default: Date.now()
+  createdAt: {
+    type: Date,
+    default: Date.now(),
   },
 });
 
 cardSchema.statics.doesUserOwnCard = function (cardId, ownerId) {
   return this.findById(cardId)
-    .then((card) => {
-      return card.owner._id == ownerId ? card : Promise.reject(new Error('User does not own card')); 
-    })
-    .catch( e => {
-      return Promise.reject(new Error('User does not own card'));
-     })
+    .then((card) => (card.owner._id == ownerId ? card : Promise.reject(new Error('User does not own card'))))
+    .catch((e) => Promise.reject(new Error('User does not own card')));
 };
 
 module.exports = mongoose.model('card', cardSchema);

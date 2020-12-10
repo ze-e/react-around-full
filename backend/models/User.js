@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const bcrypt = require('bcryptjs'); 
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -9,10 +9,10 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: {
       validator(arr) {
-          return validator.isEmail(arr);
+        return validator.isEmail(arr);
       },
-     message: 'Please enter a valid email'
-    }
+      message: 'Please enter a valid email',
+    },
   },
   password: {
     type: String,
@@ -29,19 +29,19 @@ const userSchema = new mongoose.Schema({
     type: String,
     minlength: 2,
     maxlength: 30,
-    default:'Explorer',
+    default: 'Explorer',
   },
   avatar: {
     type: String,
-    default:'https://pictures.s3.yandex.net/resources/avatar_1604080799.jpg',
+    default: 'https://pictures.s3.yandex.net/resources/avatar_1604080799.jpg',
     validate: {
       validator(str) {
-          const regex = /^http:\/\/|https:\/\//;
-          return regex.test(str);
+        const regex = /^http:\/\/|https:\/\//;
+        return regex.test(str);
       },
       message: 'Please enter a valid url',
-    }
-  }
+    },
+  },
 });
 
 userSchema.statics.findUserByCredentials = function (email, password) {
@@ -57,7 +57,7 @@ userSchema.statics.findUserByCredentials = function (email, password) {
             return Promise.reject(new Error('Incorrect email or password'));
           }
 
-          return user; 
+          return user;
         });
     });
 };

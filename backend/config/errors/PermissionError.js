@@ -5,4 +5,4 @@ class PermissionError extends Error {
   }
 }
 
-module.exports = PermissionError; 
+module.exports = PermissionError;
