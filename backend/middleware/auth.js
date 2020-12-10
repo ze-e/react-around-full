@@ -8,11 +8,11 @@ const AuthError = require('../config/errors/AuthError');
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
 
-  if (!authorization) {
+  if (!authorization || !authorization.startsWith('Bearer ')) {
     return next(new AuthError('No authorization token found'));
   }
 
-  const token = authorization;
+  const token = authorization.replace('Bearer ', '');
   let payload;
 
   try {
