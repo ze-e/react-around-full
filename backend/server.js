@@ -58,17 +58,9 @@ app.use((err, req, res, next) => {
 // errorlogger
 app.use(errorLogger);
 
-// serve static assets
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('../frontend/build'));
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '..', 'frontend', 'build'));
-  });
-}
-
 // server
 app.listen(PORT = process.env.PORT || 5000, () => {
-  console.log(`server running on port ${PORT} api at ${baseURL}`);
+  console.log(`server running on port ${PORT}`);
   const message = !process.env.NODE_ENV
     ? 'environment variables failed to load. Using default config settings'
     : 'environment variables loaded';
