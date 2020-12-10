@@ -1,6 +1,7 @@
 {
   "name": "react-around-auth",
   "version": "0.1.0",
+  "main": "server.js",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.5",
@@ -19,7 +20,11 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy":"npm run build && scp -r ./build/* azureuser@20.185.221.53:/home/azureuser/react-around-api-full/frontend"
+    "deploy": "npm run build",
+
+    "server": "cd .. && nodemon app.js --prefix backend",
+    "client": "npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "eslintConfig": {
     "extends": [
