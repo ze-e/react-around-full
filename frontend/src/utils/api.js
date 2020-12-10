@@ -1,4 +1,4 @@
-import {baseURL} from './config';
+import {baseURL} from './api_config';
 class Api{
   constructor({baseURL}){
     this.baseURL = baseURL;
