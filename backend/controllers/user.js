@@ -8,33 +8,23 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 // errors
 const NotFoundError = require('../config/errors/NotFoundError');
 const RequestError = require('../config/errors/RequestError');
+const ConflictError = require('../config/errors/ConflictError');
 
 module.exports.createUser = (req, res, next) =>{
-  const { email, password } = req.body;
-  User.findOne({email})
-  .then((user)=>{
-    //if user already exists, throw error
-    if (user) {
-      throw new RequestError('User already exists');
-    }
-
-    //if not, create user
-    bcrypt.hash(password, 10)
-    .then((hash) => {
-      User.create({
-        email: email,
-        password: hash,
-        name: req.body.name,
-        about: req.body.about,
-        avatar: req.body.avatar,
-      })
+  bcrypt.hash(req.body.password, 10)
+  .then((hash) => {
+    User.create({
+      email: req.body.email,
+      password: hash,
+      name: req.body.name,
+      about: req.body.about,
+      avatar: req.body.avatar,
     })
-    .catch((err) => next(new Error(`Could not create hash: ${err.message}`)))
-    //then send registered user
     .then((user) => res.send(user))
-    .catch((err) => next(new RequestError(`Could not register user: ${err.message}`)))
-  }) 
-
+    .catch((err) => {
+      next(new Error(`Could not create user: ${err.message}`))
+    })
+  })
   .catch((err) => next(new RequestError(`Could not create user: ${err.message}`)))
 }
 
