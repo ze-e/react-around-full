@@ -26,7 +26,6 @@ function Card(props){
       props.card.owner._id === currentUser._id ? setIsOwn(true) : setIsOwn(false);
     }
   },[props.card])
-  //const isOwn = props.card.owner._id === currentUser._id;
 
   const cardDeleteButtonClassName = (
     `element__delete-button ${isOwn && 'element__delete-button_visibility_visible'}`
@@ -38,7 +37,6 @@ function Card(props){
       props.card.likes.some(i => i === currentUser._id) ? setIsLiked(true) : setIsLiked(false);
     }
   },[props.card])
-  //const isLiked = props.card.likes.some(i => i._id === currentUser._id);
 
   const cardLikeButtonClassName = `element__like-button ${isLiked && 'element__like-button_stateliked'}`; 
 
