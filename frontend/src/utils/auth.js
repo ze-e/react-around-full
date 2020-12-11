@@ -40,7 +40,7 @@ class Auth{
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'authorization': `${localStorage.getItem('token')}`
+        'authorization': `Bearer ${localStorage.getItem('token')}`
       }
     })
     .then((res) => {
