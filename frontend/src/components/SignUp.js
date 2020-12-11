@@ -64,7 +64,7 @@ function validateForm(){
       <h1 className="login__title">Sign up</h1>
         <input className={`login__input ${emailError !=='' && 'popup__input_type_error'}`} id="email-input" type="email" name="email" minLength="2" maxLength="40" required placeholder="Email" value={email} onChange={handleEmail}/>
           <span className={`popup__input-error  ${emailError !=='' && 'popup__error_visible'}`}>{emailError}</span>
-        <input className={`login__input ${passwordError !=='' && 'popup__input_type_error'}`} id="password-input" type="password" name="password" minLength="7" maxLength="12" required placeholder="Password" value={password} onChange={handlePassword}/>
+        <input className={`login__input ${passwordError !=='' && 'popup__input_type_error'}`} id="password-input" type="password" name="password" minLength="7" maxLength="12" pattern="[A-Za-z-_\d]+" required placeholder="Password" value={password} onChange={handlePassword}/>
           <span className={`popup__input-error ${passwordError !=='' && 'popup__error_visible'}`}>{passwordError}</span>
         <button className={`login__submit ${formInvalid && 'login__submit_disabled'}`} disabled={formInvalid} type="submit">{`${loading ? 'Loading...':'Sign Up'}`}</button>
       </form>
