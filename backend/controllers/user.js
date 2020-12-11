@@ -20,9 +20,14 @@ module.exports.createUser = (req, res, next) =>{
       about: req.body.about,
       avatar: req.body.avatar,
     })
-    .then((user) => res.send(user))
+    .then((user) => {
+      res.send(user)
+    })
     .catch((err) => {
-      next(new Error(`Could not create user: ${err.message}`))
+      if(err.name === 'MongoError' && err.code === 11000) {
+        next(new ConflictError(`User ${err.keyValue.email} already exists`));
+      }
+        next(new Error(`Could not create user: ${err.message}`))
     })
   })
   .catch((err) => next(new RequestError(`Could not create user: ${err.message}`)))

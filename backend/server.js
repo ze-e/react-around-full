@@ -15,7 +15,6 @@ const mongoose = require('mongoose');
 const app = express();
 const cors = require('cors');
 const { DATABASE } = require('./config/db_config');
-const baseURL = require('../frontend/src/utils/config');
 
 // connect to database
 mongoose.connect(DATABASE, {
@@ -49,12 +48,14 @@ app.use(errors());
 // normal errors
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
-  res.status(statusCode).send({
-    message: statusCode === 500
-      ? 'An error occurred on the server'
-      : message,
+  res.status(statusCode).send(
+  {
+  message: statusCode === 500
+    ? `An error occurred on the server ${err}`
+    : message
   });
 });
+
 // errorlogger
 app.use(errorLogger);
 
