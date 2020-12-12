@@ -31,12 +31,12 @@ module.exports.deleteCard = (req, res, next) => {
   Card.doesUserOwnCard(req.params.cardId, req.user._id)
     .then((card) => {
       Card.findByIdAndRemove(card._id)
-        .then((card) => {
-          res.status(200).send({ card });
+        .then((deletedCard) => {
+          res.status(200).send({ deletedCard });
         })
-        .catch((err) => next(new NotFoundError('Card unavailable')));
+        .catch(() => next(new NotFoundError('Card unavailable')));
     })
-    .catch((err) => next(new PermissionError('User does not own card')));
+    .catch(() => next(new PermissionError('User does not own card')));
 };
 
 module.exports.addLike = (req, res, next) => {
@@ -51,7 +51,7 @@ module.exports.addLike = (req, res, next) => {
       }
       res.status(200).send({ card });
     })
-    .catch((err) => next(new NotFoundError('Card unavailable')));
+    .catch(() => next(new NotFoundError('Card unavailable')));
 };
 
 module.exports.deleteLike = (req, res, next) => {
@@ -66,5 +66,5 @@ module.exports.deleteLike = (req, res, next) => {
       }
       res.status(200).send({ card });
     })
-    .catch((err) => next(new NotFoundError('Card unavailable')));
+    .catch(() => next(new NotFoundError('Card unavailable')));
 };

@@ -35,8 +35,8 @@ const cardSchema = new mongoose.Schema({
 
 cardSchema.statics.doesUserOwnCard = function (cardId, ownerId) {
   return this.findById(cardId)
-    .then((card) => (card.owner._id == ownerId ? card : Promise.reject(new Error('User does not own card'))))
-    .catch((e) => Promise.reject(new Error('User does not own card')));
+    .then((card) => (card.owner._id === ownerId ? card : Promise.reject(new Error('User does not own card'))))
+    .catch(() => Promise.reject(new Error('User does not own card')));
 };
 
 module.exports = mongoose.model('card', cardSchema);

@@ -1,19 +1,17 @@
-const path = require('path');
-
-// config
-require('dotenv').config({ path: '../' });
-
-// middleware
-const { errors } = require('celebrate');
-const bodyParser = require('body-parser');
-const { requestLogger, errorLogger } = require('./middleware/logger');
-
 // routes
 const express = require('express');
 const mongoose = require('mongoose');
 
 const app = express();
 const cors = require('cors');
+
+// middleware
+const { errors } = require('celebrate');
+const bodyParser = require('body-parser');
+const { requestLogger, errorLogger } = require('./middleware/logger');
+
+// config
+require('dotenv').config({ path: '../' });
 const { DATABASE } = require('./config/db_config');
 
 // connect to database
@@ -46,7 +44,7 @@ app.use('/', require('./routes/card'));
 // celebrate errors
 app.use(errors());
 // normal errors
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   const { statusCode = 500, message } = err;
   res.status(statusCode).send(
     {
@@ -61,7 +59,8 @@ app.use((err, req, res, next) => {
 app.use(errorLogger);
 
 // server
-app.listen(PORT = process.env.PORT || 5000, () => {
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
   const message = !process.env.NODE_ENV
     ? 'environment variables failed to load. Using default config settings'
