@@ -65,7 +65,7 @@ module.exports.editUser = (req, res, next) => {
   User.findByIdAndUpdate(
     req.user._id,
     { $set: userFields },
-    { new: true },
+    { new: true, runValidators: true },
   )
     .then((user) => {
       res.status(200).send({ user });
@@ -80,7 +80,7 @@ module.exports.editAvatar = (req, res, next) => {
   User.findByIdAndUpdate(
     req.user._id,
     { $set: userFields },
-    { new: true },
+    { new: true, runValidators: true },
   )
     .then((user) => {
       if (!user) {
