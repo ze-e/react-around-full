@@ -44,7 +44,7 @@ app.use('/', require('./routes/card'));
 // celebrate errors
 app.use(errors());
 // normal errors
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
   res.status(statusCode).send(
     {
@@ -60,6 +60,7 @@ app.use(errorLogger);
 
 // server
 const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
   const message = !process.env.NODE_ENV
