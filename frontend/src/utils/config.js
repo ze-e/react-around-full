@@ -1,1 +1,1 @@
-exports.baseURL = process.env.PUBLIC_URL || 'https://api.zrexrodriguez.students.nomoreparties.site';
+exports.baseURL = process.env.PUBLIC_URL || 'https://around-heroku.herokuapp.com';

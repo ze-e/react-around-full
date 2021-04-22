@@ -34,12 +34,7 @@
     "eslint-plugin-import": "^2.22.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "server": "nodemon app.js",
-    "client": "cd .. && npm start --prefix frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "start": "node server.js"
   },
   "eslintConfig": {
     "extends": [
