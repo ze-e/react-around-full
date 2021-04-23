@@ -7,10 +7,10 @@ Upload and share photos from around the world! I created the frontend of this si
 The backend is a REST API created using Express and a MongoDB databse.
 
 Live:
-*https://heroku-around-frontend.herokuapp.com
+https://heroku-around-frontend.herokuapp.com
 
 Backend:
-*https://around-heroku.herokuapp.com/
+https://around-heroku.herokuapp.com/
 
 Skills used:
 
