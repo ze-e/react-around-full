@@ -1,6 +1,6 @@
 # react-around-full
 
-Frontend and Backend for Around the World app
+Frontend and Backend for Around the US app
 
 Upload and share photos from around the world! I created the frontend of this site in vanilla Javascript, and then ported it to React. 
 The backend is a REST API created using Express and a MongoDB databse.
