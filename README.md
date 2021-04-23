@@ -1,6 +1,5 @@
 # react-around-full
 
-react-around-full
 Frontend and Backend for Around the World app
 
 Upload and share photos from around the world! I created the frontend of this site in vanilla Javascript, and then ported it to React. 
