@@ -14,18 +14,18 @@ Backend:
 
 Skills used:
 
-React
-fetch
-REST API
-heroku
-Flexbox / Flexgrid
-BEM style
-ExpressJS
-NodeJS
-eslint
-JOI / celebrate for validating requests
-json web token
-mongoose
-mongoDB
-heroku
-winston
+**React
+**fetch
+**REST API
+**heroku
+**Flexbox / Flexgrid
+**BEM style
+**ExpressJS
+**NodeJS
+**eslint
+**JOI / celebrate for validating requests
+**json web token
+**mongoose
+**mongoDB
+**heroku
+**winston
